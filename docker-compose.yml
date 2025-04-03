@@ -7,7 +7,6 @@ services:
     container_name: drones_as2_unizar
     environment:
       DISPLAY: $DISPLAY
-      ROS_LOCALHOST_ONLY: 1
     privileged: true
     volumes:
       # X11
@@ -15,7 +14,7 @@ services:
       # 
       - /dev/:/dev
       # By default, mount the current directory. Change to the line below for development
-      - ./:/root/drones_as2_unizar
+      - ./drones_as2_unizar:/root/drones_as2_unizar
       # - ./drones_unizar_dev_ws:/root/drones_unizar_dev_ws
   
     network_mode: "host"
