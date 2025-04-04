@@ -33,7 +33,7 @@ windows:
       <%- if rviz %>
         - ros2 launch as2_visualization swarm_viz.launch.py
             namespace_list:=<%= drone_namespace %>
-            rviz_config:=config_ground_station/rviz2_config.rviz
+            rviz_config:=config_ground_station/tello/rviz2_config.rviz
             drone_model:=quadrotor_base
       <%- end %>
       <%- if rosbag %>
@@ -42,6 +42,12 @@ windows:
       <%- if mocap4ros2 %>
         - ros2 launch mocap4r2_optitrack_driver optitrack2.launch.py
             namespace:=mocap
-            config_file:=config_ground_station/mocap4r2_optitrack.yaml
+            config_file:=config_ground_station/tello/mocap4r2_optitrack.yaml
         - sleep 1; ros2 lifecycle set /mocap/mocap4r2_optitrack_driver_node activate
       <%- end %>
+  # Static transforms
+  - static_transforms:
+      layout:
+      panes:
+        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --child-frame-id /map --frame-id /earth
+        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --child-frame-id /odom --frame-id /map

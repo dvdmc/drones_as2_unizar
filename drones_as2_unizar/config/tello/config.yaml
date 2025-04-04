@@ -43,8 +43,7 @@ drone0:
     ros__parameters:
       tello_ip: "192.168.0.116" # IP of platform command
       calibration_file: "config/camera_calibration.yaml"
-      camera:
-        stream_url: "udp://0.0.0.0:11111" # URL of video stream
+
   # State Estimator
   state_estimator:
     ros__parameters:

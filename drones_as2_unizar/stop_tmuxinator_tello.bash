@@ -17,18 +17,10 @@ fi
 
 # Start each script in its own tmux session
 tmux new-session -d -s ground_station_stop "${script_dir}/stop_tmuxinator_ground_station.bash"
-tmux new-session -d -s as2_stop "${script_dir}/stop_tmuxinator_as2.bash" "$input"
+tmux new-session -d -s as2_stop "${script_dir}/stop_tmuxinator_as2.bash" "$input" "tello"
 
 sleep 2
 
 # Kill the tmux sessions
 tmux kill-session -t ground_station_stop
 tmux kill-session -t as2_stop
-
-# Kill gazebo
-pkill -9 -f 'gz' < /dev/null
-pkill -9 -f "gazebo" < /dev/null
-pkill -9 -f "ruby" < /dev/null
-
-# Kill gazebo bridges
-pkill -9 -f "ros_gz_bridge"

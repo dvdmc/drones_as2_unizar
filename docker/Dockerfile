@@ -62,7 +62,7 @@ RUN . /opt/ros/jazzy/setup.sh && colcon build --symlink-install --executor seque
 # AS2 TODO: update to binaries. ETA after June 2025
 RUN mkdir -p /root/aerostack2_ws/src
 RUN git clone -b jazzy-patch-trajgen https://github.com/dvdmc/aerostack2.git /root/aerostack2_ws/src/aerostack2 && \
-    git clone -b jazzy https://github.com/dvdmc/as2_platform_tello.git /root/aerostack2_ws/src/as2_platform_tello
+    git clone -b jazzy-patch-param https://github.com/dvdmc/as2_platform_tello.git /root/aerostack2_ws/src/as2_platform_tello
 RUN git clone https://github.com/MOCAP4ROS2-Project/mocap4r2_msgs.git /root/aerostack2_ws/src/mocap4r2_msgs
 WORKDIR /root/aerostack2_ws
 RUN rosdep update && rosdep install -y -r -q --from-paths src --ignore-src
@@ -72,7 +72,7 @@ RUN apt update && apt install ros-jazzy-navigation2 ros-jazzy-nav2-bringup ros-j
 
 RUN . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
 
-RUN pip3 install colcon-lcov-result cpplint cmakelint pysimplegui --break-system-packages
+RUN pip3 install colcon-lcov-result cpplint cmakelint PySimpleGUI-4-foss --break-system-packages
 
 RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc
 RUN echo "source /root/optitrack_ws/install/setup.bash" >> /root/.bashrc

@@ -1,9 +1,5 @@
 #!/bin/bash
 
-usage() {
-    echo "  Add drones namespaces as arguments, separated by commas"
-}
-
 # Get the directory of the current script
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
@@ -19,49 +15,27 @@ for namespace in ${drone_namespaces[@]}; do
   tmux_session_list+=("$namespace")
 done
 
-# Add drones from config/config.yaml file
-drone_namespaces=$(python3 ${script_dir}/utils/get_drones.py -p ${script_dir}/config/config.yaml --sep ' ')
+# Add drones from config/world.yaml file
+drone_namespaces=$(python3 ${script_dir}/utils/get_drones.py -p ${script_dir}/config/world.yaml --sep ' ')
 for namespace in ${drone_namespaces[@]}; do
   tmux_session_list+=("$namespace")
 done
 
-# If inside tmux session, get the current session name
-if [[ -n "$TMUX" ]]; then
-  current_session=$(tmux display-message -p '#S')
-fi
-
-# Send Ctrl+C signal to each window of each session
-for session in ${tmux_session_list[@]}; do
-  # Check if session exists
-  if tmux has-session -t "$session" 2>/dev/null; then
-    # Get the list of windows in the session
-    windows=($(tmux list-windows -t "$session" -F "#{window_index}"))
-    # Iterate through each window and send Ctrl+C
-    for window in "${windows[@]}"; do
-      # Send Ctrl+C to the window
-      tmux send-keys -t "$session:$window" C-c
-      sleep 0.1 # Add a small delay to allow the signal to be processed
-    done
-  fi
+# Add drones from config/world_swarm.yaml file
+drone_namespaces=$(python3 ${script_dir}/utils/get_drones.py -p ${script_dir}/config/world_swarm.yaml --sep ' ')
+for namespace in ${drone_namespaces[@]}; do
+  tmux_session_list+=("$namespace")
 done
 
-# Kill all tmux sessions from the list except for the current one
-for session in ${tmux_session_list[@]}; do
-  if [[ "$session" != "$current_session" ]]; then
-    tmux kill-session -t "$session" 2>/dev/null
-  fi
-done
+tmux_session_list+=("ground_station")
 
-# Kill the current tmux session, if in a tmux session
-if [[ -n "$TMUX" ]]; then
-  tmux kill-session -t "$current_session" 2>/dev/null
-fi
+${script_dir}/utils/stop_tmux_sessions.bash "${tmux_session_list[@]}"
 
-# Kill gazebo if running
-if pgrep -f "gazebo" > /dev/null; then
-    pkill -9 -f 'gz' < /dev/null
-    pkill -9 -f "gazebo" < /dev/null
-    pkill -9 -f "ruby" < /dev/null
-    # Kill gazebo bridges
-    pkill -9 -f "ros_gz_bridge"
-fi
+
+# Kill gazebo
+pkill -9 -f 'gz' < /dev/null
+pkill -9 -f "gazebo" < /dev/null
+pkill -9 -f "ruby" < /dev/null
+
+# Kill gazebo bridges
+pkill -9 -f "ros_gz_bridge"
