@@ -24,3 +24,11 @@ sleep 2
 # Kill the tmux sessions
 tmux kill-session -t ground_station_stop
 tmux kill-session -t as2_stop
+
+# Kill gazebo
+pkill -9 -f 'gz' < /dev/null
+pkill -9 -f "gazebo" < /dev/null
+pkill -9 -f "ruby" < /dev/null
+
+# Kill gazebo bridges
+pkill -9 -f "ros_gz_bridge"

@@ -29,7 +29,7 @@ windows:
             namespace:=<%= drone_namespace %>
             config_file:=config/tello/config.yaml
             plugin_name:=pid_speed_controller
-            plugin_config_file:=config/pid_speed_controller.yaml
+            plugin_config_file:=config/tello/pid_speed_controller.yaml
 
   # Behaviors
   - behaviors:
