@@ -1,0 +1,21 @@
+services:
+  drones_as2_unizar_nano:
+    image: drones_as2_unizar_nano
+    build:
+      context: ./docker-nano/
+      dockerfile: Dockerfile
+    container_name: drones_as2_unizar_nano
+    environment:
+      DISPLAY: $DISPLAY
+    privileged: true
+    volumes:
+      # X11
+      - ~/.Xauthority:/root/.Xauthority
+      # 
+      - /dev/:/dev
+      # By default, mount the current directory. Change to the line below for development
+      - ./drones_as2_unizar:/root/drones_as2_unizar
+      # - ./drones_unizar_dev_ws:/root/drones_unizar_dev_ws
+  
+    network_mode: "host"
+    command: tail -f /dev/null
