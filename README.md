@@ -158,3 +158,14 @@ ros2 launch my_package my_launch.py -s
 ```
 
 Also, you can see them in the default config file of the package, in the *config* folder. If you want to modify the default parameters, you can add the parameter to the config file.
+
+## Config Jetson Nano
+
+This system was tested on a ROS2 Jazzy Docker container provided by Nvidia on a Jetson Nano with JetPack 4.6 JetPack 4.6.6 [L4T 32.7.6] and ground station computers running a ROS2 Jazzy Docker container. The Pixhawk firmware version is v1.14.
+
+Use Python3 pip to install docker-compose [ref](https://dev.to/ductapedev/install-docker-compose-on-nvidia-jetson-nano-2oe):
+```
+sudo apt-get install -y python3-pip libssl-dev python-openssl libffi-dev rustc cargo
+python3 -m pip install --upgrade pip setuptools setuptools-rust
+sudo python3 -m pip install docker-compose
+```

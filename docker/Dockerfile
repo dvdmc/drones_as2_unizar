@@ -1,5 +1,7 @@
 FROM osrf/ros:jazzy-desktop-full
 
+SHELL ["/bin/bash", "-c"]
+
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y  git \
     tmux \
@@ -57,7 +59,7 @@ RUN git clone -b rolling https://github.com/MOCAP4ROS2-Project/mocap4r2_msgs
 RUN git clone https://github.com/MOCAP4ROS2-Project/mocap4ros2_optitrack
 WORKDIR /root/optitrack_ws
 RUN rosdep install --from-paths src --ignore-src -r -y
-RUN . /opt/ros/jazzy/setup.sh && colcon build --symlink-install --executor sequential
+RUN source /opt/ros/jazzy/setup.bash && colcon build --symlink-install --executor sequential
 
 # AS2 TODO: update to binaries. ETA after June 2025
 RUN mkdir -p /root/aerostack2_ws/src
@@ -70,7 +72,7 @@ RUN rosdep update && rosdep install -y -r -q --from-paths src --ignore-src
 # AS2 dependencies on Nav2
 RUN apt update && apt install ros-jazzy-navigation2 ros-jazzy-nav2-bringup ros-jazzy-nav2-minimal-tb* -y
 
-RUN . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
+RUN source /opt/ros/jazzy/setup.bash && colcon build --symlink-install
 
 RUN pip3 install colcon-lcov-result cpplint cmakelint PySimpleGUI-4-foss --break-system-packages
 
