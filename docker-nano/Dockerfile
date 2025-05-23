@@ -53,7 +53,7 @@ RUN apt-get install -y cppcheck lcov
 RUN apt-get install -y ros-jazzy-rmw-cyclonedds-cpp
 
 # Mavlink
-RUN apt install -y ros-jazzy-mavros
+RUN apt-get install -y ros-jazzy-mavros
 RUN source /opt/ros/jazzy/setup.bash && ros2 run mavros install_geographiclib_datasets.sh
 
 # Gazebo (Harmonic)
@@ -78,7 +78,7 @@ WORKDIR /root/aerostack2_ws
 RUN rosdep update && rosdep install -y -r -q --from-paths src --ignore-src
 
 # AS2 dependencies on Nav2
-RUN apt update && apt install ros-jazzy-navigation2 ros-jazzy-nav2-bringup ros-jazzy-nav2-minimal-tb* -y
+RUN apt-get update && apt-get install ros-jazzy-navigation2 ros-jazzy-nav2-bringup ros-jazzy-nav2-minimal-tb* -y
 
 RUN source /opt/ros/jazzy/setup.bash && MAKEFLAGS="-j2" colcon build --symlink-install --executor sequential
 
