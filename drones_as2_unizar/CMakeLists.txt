@@ -35,9 +35,7 @@ target_include_directories(gt_pose_broadcaster
   PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
-    ${rclcpp_INCLUDE_DIRS}
-    ${nav_msgs_INCLUDE_DIRS}
-    ${mocap4r2_msgs_INCLUDE_DIRS})
+  )
 
 ament_target_dependencies(gt_pose_broadcaster
   PUBLIC
@@ -51,7 +49,7 @@ ament_target_dependencies(gt_pose_broadcaster
   mocap4r2_msgs
   )
 
-rclcpp_components_register_node(gt_pose_broadcaster PLUGIN "tb2_unizar::GTPoseBroadcaster" EXECUTABLE gt_pose_broadcaster_node)
+rclcpp_components_register_node(gt_pose_broadcaster PLUGIN "drones_as2_unizar::GTPoseBroadcaster" EXECUTABLE gt_pose_broadcaster_node)
 install(TARGETS gt_pose_broadcaster
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib

@@ -1,0 +1,39 @@
+<%
+# Input parameters
+drone_namespace = @settings["drone_namespace"]
+keyboard_teleop = @settings["keyboard_teleop"] == "true"
+rviz            = @settings["rviz"] == "true"
+mocap4ros2      = @settings["mocap4ros2"] == "true"
+%>
+
+name: ground_station
+attach: false
+root: ./
+windows:
+
+  # Ground station
+  - ground_station:
+      layout:
+      panes:
+      <%- if rviz %>
+        - ros2 run rviz2 rviz2 -d config_ground_station/mavros/rviz2_config.rviz
+      <%- end %>
+  # Pose
+  - pose:
+      layout:
+      panes:
+      <%- if mocap4ros2 %>
+      # This should ideally be in the ground station for multi-robot setups.
+        - ros2 launch mocap4r2_optitrack_driver optitrack2.launch.py namespace:=mocap config_file:=config_ground_station/mavros/mocap4r2_optitrack.yaml
+        - sleep 1; ros2 lifecycle set /mocap/mocap4r2_optitrack_driver_node activate
+        # The mocap4r2_optitrack_driver will publish to /mocap/rigid_bodies and we have to broadcast TFs from there
+        - sleep 2; ros2 run drones_as2_unizar gt_pose_broadcaster_node --ros-args -r rigid_bodies:=/mocap/rigid_bodies
+      <%- end %>
+
+  # Static transforms
+  - static_transforms:
+      layout:
+      panes:
+        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --frame-id earth --child-frame-id map
+        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 1 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --frame-id map --child-frame-id odom
+        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --frame-id base_link --child-frame-id optitrack_marker
