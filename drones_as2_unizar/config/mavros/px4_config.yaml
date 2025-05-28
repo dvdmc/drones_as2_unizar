@@ -71,9 +71,9 @@
 # local_position
 /**/local_position:
   ros__parameters:
-    frame_id: "map"
+    frame_id: "odom" # dvdmc: previous value: "map" check. Probably this makes the land mode go to odom instead of map.
     tf.send: false
-    tf.frame_id: "map"
+    tf.frame_id: "odom" # dvdmc: previous value: "map" check
     tf.child_frame_id: "base_link"
     tf.send_fcu: false
 
@@ -259,7 +259,7 @@
 # vision_pose_estimate
 /**/vision_pose:
   ros__parameters:
-    tf.listen: false           # enable tf listener (disable topic subscribers)
+    tf.listen: true           # enable tf listener (disable topic subscribers)
     tf.frame_id: "odom"
     tf.child_frame_id: "vision_estimate"
     tf.rate_limit: 10.0
