@@ -17,6 +17,16 @@ windows:
         #     namespace:=<%= drone_namespace %>
         #     platform_config_file:=config/tello/config.yaml
         - ros2 launch drones_as2_unizar px4.launch
+  
+  - sensors:
+      layout: tiled
+      panes:
+        - ros2 run realsense2_camera realsense2_camera_node
+
+  - bag:
+      layout: tiled
+      panes:
+        - echo "ros2 bag record /mavros/local_position/pose /tf /camera/camera/color/image_raw/compressed /camera/camera/depth/image_rect_raw/"
   # # Basic Robotics Functions
   # - basics_robotics_functions:
   #     layout:

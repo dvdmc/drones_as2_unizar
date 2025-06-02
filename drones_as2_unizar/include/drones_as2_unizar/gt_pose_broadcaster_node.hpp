@@ -240,20 +240,20 @@ class GTPoseBroadcaster : public rclcpp::Node {
 
     // Publish pose
     geometry_msgs::msg::PoseStamped pose_msg;
+    tf2::toMsg(odom_to_base_, pose_msg.pose);
     pose_msg.header.stamp = msg.header.stamp;
-    pose_msg.header.frame_id = earth_frame_;
-    pose_msg.pose = msg.pose;
+    pose_msg.header.frame_id = map_frame_;
     pose_msg.pose.orientation.x =
-        orientation_alpha_ * msg.pose.orientation.x +
+        orientation_alpha_ * pose_msg.pose.orientation.x +
         (1 - orientation_alpha_) * last_pose_msg_.pose.orientation.x;
     pose_msg.pose.orientation.y =
-        orientation_alpha_ * msg.pose.orientation.y +
+        orientation_alpha_ * pose_msg.pose.orientation.y +
         (1 - orientation_alpha_) * last_pose_msg_.pose.orientation.y;
     pose_msg.pose.orientation.z =
-        orientation_alpha_ * msg.pose.orientation.z +
+        orientation_alpha_ * pose_msg.pose.orientation.z +
         (1 - orientation_alpha_) * last_pose_msg_.pose.orientation.z;
     pose_msg.pose.orientation.w =
-        orientation_alpha_ * msg.pose.orientation.w +
+        orientation_alpha_ * pose_msg.pose.orientation.w +
         (1 - orientation_alpha_) * last_pose_msg_.pose.orientation.w;
     publish_pose(pose_msg);
 

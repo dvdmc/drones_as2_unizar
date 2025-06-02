@@ -15,7 +15,9 @@ endif()
 # find dependencies
 set(PROJECT_DEPENDENCIES
   ament_cmake
+  ament_cmake_python
   rclcpp
+  rclpy
   rclcpp_components
   nav_msgs
   geometry_msgs
@@ -62,5 +64,14 @@ install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
 # install(DIRECTORY maps DESTINATION share/${PROJECT_NAME})
 # install(DIRECTORY meshes DESTINATION share/${PROJECT_NAME})
 # install(DIRECTORY urdf DESTINATION share/${PROJECT_NAME})
+
+# Install Python modules
+ament_python_install_package(${PROJECT_NAME})
+# Install Python executables
+install(PROGRAMS
+  scripts/keep_pose.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 
 ament_package()

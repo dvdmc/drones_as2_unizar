@@ -59,7 +59,7 @@ RUN source /opt/ros/jazzy/setup.bash && ros2 run mavros install_geographiclib_da
 # Gazebo (Harmonic)
 # RUN apt-get install -y ros-jazzy-ros-gz
 
-# OptiTrack
+# OptiTrack NOTE: We run the position mode from the ground station.
 # RUN mkdir -p /root/optitrack_ws/src
 # WORKDIR /root/optitrack_ws/src
 # RUN git clone -b rolling https://github.com/MOCAP4ROS2-Project/mocap4r2
@@ -84,8 +84,20 @@ RUN source /opt/ros/jazzy/setup.bash && MAKEFLAGS="-j2" colcon build --symlink-i
 
 RUN pip3 install colcon-lcov-result cpplint cmakelint PySimpleGUI-4-foss --break-system-packages
 
+# Install Realsense from: https://github.com/IntelRealSense/realsense-ros
+RUN apt-get install ros-jazzy-librealsense2*
+RUN mkdir -p /root/realsense_ws/src
+WORKDIR /root/realsense_ws/src
+RUN git clone https://github.com/IntelRealSense/realsense-ros.git
+WORKDIR /root/realsense_ws
+RUN rosdep install -i --from-path src --rosdistro $ROS_DISTRO --skip-keys=librealsense2 -y
+RUN source /opt/ros/jazzy/setup.bash && colcon build
+
+
+
 RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc
-RUN echo "source /root/optitrack_ws/install/setup.bash" >> /root/.bashrc
+# RUN echo "source /root/optitrack_ws/install/setup.bash" >> /root/.bashrc
 RUN echo "source /root/aerostack2_ws/install/setup.bash" >> /root/.bashrc
+RUN echo "source /root/realsense_ws/install/setup.bash" >> /root/.bashrc
 
 WORKDIR /root/
