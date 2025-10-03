@@ -21,12 +21,17 @@ windows:
   - sensors:
       layout: tiled
       panes:
-        - ros2 run realsense2_camera realsense2_camera_node
+        - ros2 run realsense2_camera realsense2_camera_node --ros-args -p spatial_filter.enable:=true
 
   - bag:
       layout: tiled
       panes:
-        - echo "ros2 bag record /mavros/local_position/pose /tf /camera/camera/color/image_raw/compressed /camera/camera/depth/image_rect_raw/"
+        - echo "ros2 bag record /mavros/local_position/pose /mavros/vision_pose/pose /tf /tf_static /camera/camera/color/image_raw/compressed /camera/camera/depth/image_rect_raw/ /camera/camera/color/camera_info /camera/camera/color/metadata /camera/camera/depth/camera_info /camera/camera/depth/metadata"
+  
+  - static_transforms:
+      layout:
+      panes:
+        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 0.19 --y 0 --z -0.1 --qx 0 --qy 0.7071 --qz 0 --qw 0.7071 --frame-id base_link --child-frame-id camera_link
   # # Basic Robotics Functions
   # - basics_robotics_functions:
   #     layout:

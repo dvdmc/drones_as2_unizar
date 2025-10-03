@@ -16,6 +16,6 @@ services:
       # By default, mount the current directory. Change to the line below for development
       - ./drones_as2_unizar:/root/drones_unizar_ws/src/drones_as2_unizar
       # - ./drones_unizar_dev_ws:/root/drones_unizar_dev_ws
-  
+      - ./bags:/root/bags
     network_mode: "host"
     command: tail -f /dev/null
