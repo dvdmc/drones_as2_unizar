@@ -55,7 +55,7 @@ case ${motion_controller_plugin} in
 esac
 
 # Launch aerostack2 for each drone namespace
-eval "tmuxinator start -n ${drones_namespace} -p tmuxinator/aerostack2.yaml \
+eval "tmuxinator start -n ${drones_namespace} -p tmuxinator/mavros/aerostack2.yaml \
     drone_namespace=${drones_namespace} \
     motion_controller_plugin=${motion_controller_plugin} \
     rosbag=${rosbag}"

@@ -66,11 +66,11 @@
   #       yaw: -1.57079632679 # Rotation around z (rad)
 
 # Specific Parameters for each drone
-# drone0:
-#   # Motion Capture
-#   state_estimator:
-#     ros__parameters:
-#       rigid_body_name: "1"
+drone0:
+  # Motion Capture
+  state_estimator:
+    ros__parameters:
+      rigid_body_name: "19"
 
 # Specific Parameters for each drone
 drone0:
