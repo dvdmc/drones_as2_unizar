@@ -1,6 +1,8 @@
 <%
 # Input parameters
-drone_namespace = @settings["drone_namespace"]
+drone_namespace           = @settings["drone_namespace"]
+motion_controller_plugin  = @settings["motion_controller_plugin"]
+rosbag                    = @settings["rosbag"]
 %>
 name: <%= drone_namespace %>
 attach: false
@@ -13,20 +15,24 @@ windows:
       layout: tiled
       panes:
       # Platform
-        # - ros2 launch as2_platform_tello tello_platform.launch.py
-        #     namespace:=<%= drone_namespace %>
-        #     platform_config_file:=config/tello/config.yaml
-        - ros2 launch drones_as2_unizar px4.launch
+        - ros2 launch as2_platform_mavlink as2_platform_mavlink_launch.py
+            namespace:=<%= drone_namespace %>
+            platform_config_file:=config/config.yaml
+        - ros2 launch as2_platform_mavlink mavros_launch.py
+            namespace:=<%= drone_namespace %>
+            mavros_config_file:=config/config.yaml
   
   - sensors:
       layout: tiled
       panes:
         - ros2 run realsense2_camera realsense2_camera_node --ros-args -p spatial_filter.enable:=true
 
+  <%- if rosbag %>
   - bag:
       layout: tiled
       panes:
         - echo "ros2 bag record /mavros/local_position/pose /mavros/vision_pose/pose /tf /tf_static /camera/camera/color/image_raw/compressed /camera/camera/depth/image_rect_raw/ /camera/camera/color/camera_info /camera/camera/color/metadata /camera/camera/depth/camera_info /camera/camera/depth/metadata"
+  <%- end %>
   
   - static_transforms:
       layout:
@@ -39,28 +45,28 @@ windows:
         # State Estimation
         - ros2 launch as2_state_estimator state_estimator_launch.py
             namespace:=<%= drone_namespace %>
-            config_file:=config/tello/config.yaml
+            config_file:=config/config.yaml
         # Motion Controller
         - ros2 launch as2_motion_controller controller_launch.py
             namespace:=<%= drone_namespace %>
-            config_file:=config/tello/config.yaml
-            plugin_name:=pid_speed_controller
-            plugin_config_file:=config/tello/pid_speed_controller.yaml
+            config_file:=config/config.yaml
+            plugin_name:=<%= motion_controller_plugin %>
+            plugin_config_file:=config/<%= motion_controller_plugin %>.yaml
 
-  Behaviors
+  # Behaviors
   - behaviors:
       layout:
       panes:
         # Motion Behaviors
         - ros2 launch as2_behaviors_motion motion_behaviors_launch.py
             namespace:=<%= drone_namespace %>
-            config_file:=config/tello/config.yaml
+            config_file:=config/config.yaml
         # Trajectory Generation Behavior
         - ros2 launch as2_behaviors_trajectory_generation generate_polynomial_trajectory_behavior_launch.py
             namespace:=<%= drone_namespace %>
-            config_file:=config/tello/config.yaml
+            config_file:=config/config.yaml
 
-  Mission execution
+  # Mission execution
   - mission_execution:
       layout:
       panes:
@@ -69,10 +75,10 @@ windows:
             drone_id:=<%= drone_namespace %>
             tree:=./trees/square.xml
 
-  Mission monitoring
+  # Mission monitoring
   - mission_monitoring:
       layout: tiled
       panes:
         - ros2 run as2_alphanumeric_viewer as2_alphanumeric_viewer_node
             --ros-args -r  __ns:=/<%= drone_namespace %>
-        - ros2 run as2_python_api mission_executor --n <%= drone_namespace %> --use_sim_time --add_namespace
+        - echo Run here the mission

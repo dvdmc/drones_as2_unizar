@@ -2,24 +2,20 @@
 
 usage() {
     echo "  options:"
+    echo "      -n: drone namespaces, comma separated. Default is 'drone0'"
     echo "      -t: launch keyboard teleoperation. Default not launch"
-    echo "      -v: open rviz. Default not launch"
-    echo "      -r: record rosbag. Default not launch"
-    echo "      -n: drone namespaces, comma separated. Default get from world description config file"
+    echo "      -v: open rviz. Default launch"
     echo "      -m: launch mocap4ros2. Default launch"
-    echo "      -g: launch using gnome-terminal instead of tmux. Default not set"
 }
 
 # Initialize variables with default values
+drones_namespace_comma="drone0"
 keyboard_teleop="false"
 rviz="false"
-rosbag="false"
-drones_namespace_comma=""
-mocap4ros2="true"
-use_gnome="false"
+mocap4ros2="false"
 
 # Parse command line arguments
-while getopts "mtvrn:g" opt; do
+while getopts "mtvn" opt; do
   case ${opt} in
     t )
       keyboard_teleop="true"
@@ -27,17 +23,11 @@ while getopts "mtvrn:g" opt; do
     v )
       rviz="true"
       ;;
-    r )
-      rosbag="true"
-      ;;
     n )
-      drones_namespace_comma="${OPTARG}"
+      drones_namespace="${OPTARG}"
       ;;
     m )
       mocap4ros2="false"
-      ;;
-    g )
-      use_gnome="true"
       ;;
     \? )
       echo "Invalid option: -$OPTARG" >&2
@@ -54,33 +44,19 @@ while getopts "mtvrn:g" opt; do
   esac
 done
 
-# If no drone namespaces are provided, get them from the world description config file
-# if [ -z "$drones_namespace_comma" ]; then
-#   drones_namespace_comma=$(python3 utils/get_drones.py -p config/mavros/config.yaml --sep ',')
-# fi
-# IFS=',' read -r -a drone_namespaces <<< "$drones_namespace_comma"
-
-# Select between tmux and gnome-terminal
-tmuxinator_mode="start"
-tmuxinator_end="wait"
-if [[ ${use_gnome} == "true" ]]; then
-  tmuxinator_mode="debug"
-  tmuxinator_end="> ${tmp_file} && python3 utils/tmuxinator_to_genome.py && wait"
+# If no drone namespaces are provided, finish the execution
+if [ -z "$drones_namespace" ]; then
+  echo "No drone namespace provided. Set it using the -n option"
+  exit 1
 fi
 
 # Launch aerostack2 ground station
-eval "tmuxinator ${tmuxinator_mode} -n ground_station -p tmuxinator/mavros/ground_station.yaml \
-  drone_namespace=${drones_namespace_comma} \
+eval "tmuxinator start -n ground_station -p tmuxinator/ground_station.yaml \
+  drone_namespace=${drones_namespace} \
   keyboard_teleop=${keyboard_teleop} \
   rviz=${rviz} \
-  rosbag=${rosbag} \
   mocap4ros2=${mocap4ros2} \
-  ${tmuxinator_end}"
+  wait"
 
 # Attach to tmux session
-if [[ ${use_gnome} == "false" ]]; then
-  tmux attach-session -t ground_station
-# If tmp_file exists, remove it
-elif [[ -f ${tmp_file} ]]; then
-  rm ${tmp_file}
-fi
+tmux attach-session -t ground_station
