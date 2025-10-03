@@ -15,10 +15,8 @@ windows:
   - mission_monitoring:
       layout:
       panes:
-    <%- drone_namespace.split(',').each do |drone| %>
         - ros2 run as2_alphanumeric_viewer as2_alphanumeric_viewer_node
-            --ros-args -r  __ns:=/<%= drone %>
-    <%- end %>
+            --ros-args -r  __ns:=/<%= drone_namespace %>
         - echo Run here the mission
 
   # Ground station
@@ -28,7 +26,7 @@ windows:
       <%- if mocap4ros2 %>
         - ros2 launch mocap4r2_optitrack_driver optitrack2.launch.py
             namespace:=mocap
-            config_file:=ground_station/mocap4r2_optitrack.yaml
+            config_file:=config_ground_station/mavros/mocap4r2_optitrack.yaml
         - sleep 1; ros2 lifecycle set /mocap/mocap4r2_optitrack_driver_node activate
       <%- end %>
       <%- if rviz %>

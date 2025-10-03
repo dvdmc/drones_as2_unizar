@@ -11,8 +11,8 @@ usage() {
 # Initialize variables with default values
 drones_namespace_comma="drone0"
 keyboard_teleop="false"
-rviz="false"
-mocap4ros2="false"
+rviz="true"
+mocap4ros2="true"
 
 # Parse command line arguments
 while getopts "mtvn:" opt; do
@@ -51,7 +51,7 @@ if [ -z "$drones_namespace" ]; then
 fi
 
 # Launch aerostack2 ground station
-eval "tmuxinator start -n ground_station -p tmuxinator/ground_station.yaml \
+eval "tmuxinator start -n ground_station -p tmuxinator/mavros/ground_station.yaml \
   drone_namespace=${drones_namespace} \
   keyboard_teleop=${keyboard_teleop} \
   rviz=${rviz} \
