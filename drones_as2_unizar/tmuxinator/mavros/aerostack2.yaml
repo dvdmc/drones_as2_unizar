@@ -17,10 +17,10 @@ windows:
       # Platform
         - ros2 launch as2_platform_mavlink as2_platform_mavlink_launch.py
             namespace:=<%= drone_namespace %>
-            platform_config_file:=config/config.yaml
+            platform_config_file:=config/mavros/config.yaml
         - ros2 launch as2_platform_mavlink mavros_launch.py
             namespace:=<%= drone_namespace %>
-            mavros_config_file:=config/config.yaml
+            mavros_config_file:=config/mavros/config.yaml
   
   - sensors:
       layout: tiled
@@ -33,7 +33,7 @@ windows:
       panes:
         - echo "ros2 bag record /mavros/local_position/pose /mavros/vision_pose/pose /tf /tf_static /camera/camera/color/image_raw/compressed /camera/camera/depth/image_rect_raw/ /camera/camera/color/camera_info /camera/camera/color/metadata /camera/camera/depth/camera_info /camera/camera/depth/metadata"
   <%- end %>
-  
+
   - static_transforms:
       layout:
       panes:
@@ -45,13 +45,13 @@ windows:
         # State Estimation
         - ros2 launch as2_state_estimator state_estimator_launch.py
             namespace:=<%= drone_namespace %>
-            config_file:=config/config.yaml
+            config_file:=config/mavros/config.yaml
         # Motion Controller
         - ros2 launch as2_motion_controller controller_launch.py
             namespace:=<%= drone_namespace %>
-            config_file:=config/config.yaml
+            config_file:=config/mavros/config.yaml
             plugin_name:=<%= motion_controller_plugin %>
-            plugin_config_file:=config/<%= motion_controller_plugin %>.yaml
+            plugin_config_file:=config/mavros/<%= motion_controller_plugin %>.yaml
 
   # Behaviors
   - behaviors:
@@ -60,11 +60,11 @@ windows:
         # Motion Behaviors
         - ros2 launch as2_behaviors_motion motion_behaviors_launch.py
             namespace:=<%= drone_namespace %>
-            config_file:=config/config.yaml
+            config_file:=config/mavros/config.yaml
         # Trajectory Generation Behavior
         - ros2 launch as2_behaviors_trajectory_generation generate_polynomial_trajectory_behavior_launch.py
             namespace:=<%= drone_namespace %>
-            config_file:=config/config.yaml
+            config_file:=config/mavros/config.yaml
 
   # Mission execution
   - mission_execution:

@@ -8,15 +8,18 @@ usage() {
 }
 
 # Initialize variables with default values
-drones_namespace="drone0"
+drone_namespace=""
 motion_controller_plugin="pid"
 rosbag="false"
 
 # Arg parser
-while getopts "n" opt; do
+while getopts "n:r" opt; do
   case ${opt} in
     n )
-      drones_namespace="${OPTARG}"
+      drone_namespace="${OPTARG}"
+      ;;
+    r )
+      rosbag="true"
       ;;
     \? )
       echo "Invalid option: -$OPTARG" >&2
@@ -34,7 +37,7 @@ while getopts "n" opt; do
 done
 
 # If no drone namespaces are provided, finish the execution
-if [ -z "$drones_namespace" ]; then
+if [ -z "$drone_namespace" ]; then
   echo "No drone namespace provided. Set it using the -n option"
   exit 1
 fi
@@ -55,8 +58,8 @@ case ${motion_controller_plugin} in
 esac
 
 # Launch aerostack2 for each drone namespace
-eval "tmuxinator start -n ${drones_namespace} -p tmuxinator/mavros/aerostack2.yaml \
-    drone_namespace=${drones_namespace} \
+eval "tmuxinator start -n ${drone_namespace} -p tmuxinator/mavros/aerostack2.yaml \
+    drone_namespace=${drone_namespace} \
     motion_controller_plugin=${motion_controller_plugin} \
     rosbag=${rosbag}"
     wait

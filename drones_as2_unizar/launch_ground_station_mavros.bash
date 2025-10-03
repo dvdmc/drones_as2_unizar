@@ -15,7 +15,7 @@ rviz="false"
 mocap4ros2="false"
 
 # Parse command line arguments
-while getopts "mtvn" opt; do
+while getopts "mtvn:" opt; do
   case ${opt} in
     t )
       keyboard_teleop="true"
