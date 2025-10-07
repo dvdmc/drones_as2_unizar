@@ -33,9 +33,9 @@ windows:
         - ros2 run rviz2 rviz2 -d config_ground_station/mavros/rviz2_config.rviz
       <%- end %>
 
-  # Static transforms
-  - static_transforms:
-      layout:
-      panes:
-        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --frame-id earth --child-frame-id drone0/map
-        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 1 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --frame-id drone0/map --child-frame-id drone0/odom
+  # Static transforms NOTE: This is currently being published by AS2 state estimator automatically
+  # - static_transforms:
+  #     layout:
+  #     panes:
+  #       - sleep 2; ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --frame-id earth --child-frame-id drone0/map
+  #       - sleep 2; ros2 run tf2_ros static_transform_publisher --x 1 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --frame-id drone0/map --child-frame-id drone0/odom

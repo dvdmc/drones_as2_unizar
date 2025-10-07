@@ -91,8 +91,6 @@ Visualization Manager:
           Value: true
         drone0/base_link_frd:
           Value: true
-        drone0/camera_link:
-          Value: true
         drone0/map:
           Value: true
         drone0/map_ned:
@@ -114,8 +112,29 @@ Visualization Manager:
             drone0/map_ned:
               {}
             drone0/odom:
-              base_link:
-                base_link_frd:
+              drone0/base_link:
+                camera_link:
+                  camera_accel_frame:
+                    camera_accel_optical_frame:
+                      {}
+                  camera_aligned_depth_to_infra1_frame:
+                    camera_infra1_optical_frame:
+                      {}
+                  camera_color_frame:
+                    camera_color_optical_frame:
+                      {}
+                  camera_depth_frame:
+                    camera_depth_optical_frame:
+                      {}
+                  camera_gyro_frame:
+                    camera_gyro_optical_frame:
+                      {}
+                  camera_infra1_frame:
+                    {}
+                  camera_infra2_frame:
+                    camera_infra2_optical_frame:
+                      {}
+                drone0/base_link_frd:
                   {}
               drone0/odom_ned:
                 {}
@@ -195,25 +214,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.217302680015564
+      Distance: 4.674288749694824
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.0391712412238121
-        Y: -1.1693193912506104
-        Z: 0.6545328497886658
+        X: 1.421330451965332
+        Y: -1.188689112663269
+        Z: 1.0829946994781494
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5647971034049988
+      Pitch: 0.3047969937324524
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.116683483123779
+      Yaw: 4.196685791015625
     Saved: ~
 Window Geometry:
   Depth:
