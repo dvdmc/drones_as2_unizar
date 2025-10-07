@@ -37,5 +37,5 @@ windows:
   - static_transforms:
       layout:
       panes:
-        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --frame-id earth --child-frame-id map
-        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 1 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --frame-id map --child-frame-id odom
+        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --frame-id earth --child-frame-id drone0/map
+        - sleep 2; ros2 run tf2_ros static_transform_publisher --x 1 --y 0 --z 0 --qx 0 --qy 0 --qz 0 --qw 1 --frame-id drone0/map --child-frame-id drone0/odom

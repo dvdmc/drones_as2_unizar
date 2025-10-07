@@ -26,6 +26,8 @@
       mocap_topic: "/mocap/rigid_bodies"
       twist_smooth_filter_cte: 0.1
       orientation_smooth_filter_cte: 0.1
+      rigid_body_name: "19"
+
       # # Outdoor (GPS) Raw Odometry
       # plugin_name: "raw_odometry"
       # use_gps: true
@@ -67,14 +69,6 @@
 
 # Specific Parameters for each drone
 drone0:
-  # Motion Capture
-  state_estimator:
-    ros__parameters:
-      rigid_body_name: "19"
-
-# Specific Parameters for each drone
-drone0:
-  # Platform
   mavros/mavros_node:
     ros__parameters:
       fcu_url: "/dev/ttyACM0:57600" # Autopilot address for connection
@@ -82,3 +76,38 @@ drone0:
       tgt_system: 1 # Target system ID = Instance + 1
       tgt_component: 1 # Target component ID
       log_output: "screen"
+      odom_frame: "drone0/odom"
+      map_frame: "drone0/map"
+
+  **/global_position:
+    ros__parameters:
+      frame_id: "drone0/map"               # origin frame
+      child_frame_id: "drone0/base_link"   # body-fixed frame
+      tf.frame_id: "drone0/map"            # TF frame_id
+      tf.global_frame_id: "drone0/earth"   # TF earth frame_id
+      tf.child_frame_id: "drone0/base_link"  # TF child_frame_id
+
+  **/imu:
+    ros__parameters:
+      frame_id: "drone0/base_link"
+
+  **/local_position:
+    ros__parameters:
+      frame_id: "drone0/map"
+      tf.frame_id: "drone0/map"
+      tf.child_frame_id: "drone0/base_link"
+
+  **/setpoint_attitude:
+    ros__parameters:
+      tf.frame_id: "drone0/map"
+
+  **/setpoint_position:
+    ros__parameters:
+      tf.frame_id: "drone0/map"
+
+  **/odometry:
+    ros__parameters:
+      fcu.odom_parent_id_des: "drone0/odom"        # desired parent frame rotation of the FCU's odometry
+      fcu.odom_child_id_des: "drone0/base_link"    # desired child frame rotation of the FCU's odometry
+      fcu.map_id_des: "drone0/map"
+
