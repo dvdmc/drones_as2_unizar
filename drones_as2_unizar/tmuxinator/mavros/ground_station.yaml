@@ -27,7 +27,7 @@ windows:
         - ros2 launch mocap4r2_optitrack_driver optitrack2.launch.py
             namespace:=mocap
             config_file:=config_ground_station/mavros/mocap4r2_optitrack.yaml
-        - sleep 1; ros2 lifecycle set /mocap/mocap4r2_optitrack_driver_node activate
+        - sleep 2; ros2 lifecycle set /mocap/mocap4r2_optitrack_driver_node activate
       <%- end %>
       <%- if rviz %>
         - ros2 run rviz2 rviz2 -d config_ground_station/mavros/rviz2_config.rviz
