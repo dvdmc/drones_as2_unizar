@@ -59,12 +59,6 @@ install(TARGETS gt_pose_broadcaster
   INCLUDES DESTINATION include
 )
 
-add_executable(vision_pose_republisher src/vision_pose_republisher.cpp)
-ament_target_dependencies(vision_pose_republisher rclcpp geometry_msgs)
-install(TARGETS
-  vision_pose_republisher
-  DESTINATION lib/${PROJECT_NAME})
-
 install(DIRECTORY config DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
 # install(DIRECTORY maps DESTINATION share/${PROJECT_NAME})
