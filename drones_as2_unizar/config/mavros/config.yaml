@@ -11,7 +11,7 @@
       max_thrust: 29.0
       min_thrust: 0.15
       # # Indoor RealSense
-      # external_odom: true
+      external_odom: true
 
   # State Estimator
   state_estimator:
@@ -77,14 +77,14 @@ drone0:
       tgt_component: 1 # Target component ID
       log_output: "screen"
       odom_frame: "drone0/odom"
-      map_frame: "drone0/map"
+      map_frame: "earth"
 
 /drone0/mavros/global_position:
   ros__parameters:
-    frame_id: "drone0/map"               # origin frame
+    frame_id: "earth"               # origin frame
     child_frame_id: "drone0/base_link"   # body-fixed frame
-    tf.frame_id: "drone0/map"            # TF frame_id
-    tf.global_frame_id: "drone0/earth"   # TF earth frame_id
+    tf.frame_id: "earth"            # TF frame_id
+    tf.global_frame_id: "earth"   # TF earth frame_id
     tf.child_frame_id: "drone0/base_link"  # TF child_frame_id
 
 /drone0/mavros/imu:
@@ -93,21 +93,21 @@ drone0:
 
 /drone0/mavros/local_position:
   ros__parameters:
-    frame_id: "drone0/map"
-    tf.frame_id: "drone0/map"
+    frame_id: "earth"
+    tf.frame_id: "earth"
     tf.child_frame_id: "drone0/base_link"
 
 /drone0/mavros/setpoint_attitude:
   ros__parameters:
-    tf.frame_id: "drone0/map"
+    tf.frame_id: "earth"
 
 /drone0/mavros/setpoint_position:
   ros__parameters:
-    tf.frame_id: "drone0/map"
+    tf.frame_id: "earth"
 
 /drone0/mavros/odometry:
   ros__parameters:
     fcu.odom_parent_id_des: "drone0/odom"        # desired parent frame rotation of the FCU's odometry
     fcu.odom_child_id_des: "drone0/base_link"    # desired child frame rotation of the FCU's odometry
-    fcu.map_id_des: "drone0/map"
+    fcu.map_id_des: "earth"
 
