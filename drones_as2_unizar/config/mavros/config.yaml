@@ -11,7 +11,7 @@
       max_thrust: 29.0
       min_thrust: 0.15
       # # Indoor RealSense
-      external_odom: true
+      external_odom: false
 
   # State Estimator
   state_estimator:
