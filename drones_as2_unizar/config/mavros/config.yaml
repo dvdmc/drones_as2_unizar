@@ -1,7 +1,7 @@
 /**:
   # Global Parameters
   ros__parameters:
-    tf_timeout_threshold: 0.1
+    tf_timeout_threshold: 0.5
 
 /**:
   # Basic Robotics Functions
