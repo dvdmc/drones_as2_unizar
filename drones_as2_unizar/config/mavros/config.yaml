@@ -1,7 +1,7 @@
 /**:
   # Global Parameters
   ros__parameters:
-    tf_timeout_threshold: 0.5
+    tf_timeout_threshold: 0.1
 
 /**:
   # Basic Robotics Functions
@@ -26,7 +26,6 @@
       mocap_topic: "/mocap/rigid_bodies"
       twist_smooth_filter_cte: 0.1
       orientation_smooth_filter_cte: 0.1
-      rigid_body_name: "19"
 
       # # Outdoor (GPS) Raw Odometry
       # plugin_name: "raw_odometry"
@@ -68,6 +67,10 @@
   #       yaw: -1.57079632679 # Rotation around z (rad)
 
 # Specific Parameters for each drone
+drone0/state_estimator:
+  ros__parameters:
+    rigid_body_name: "19"
+
 drone0:
   mavros/mavros_node:
     ros__parameters:
@@ -77,13 +80,13 @@ drone0:
       tgt_component: 1 # Target component ID
       log_output: "screen"
       odom_frame: "drone0/odom"
-      map_frame: "earth"
+      map_frame: "drone0/map"
 
 /drone0/mavros/global_position:
   ros__parameters:
-    frame_id: "earth"               # origin frame
+    frame_id: "drone0/map"               # origin frame
     child_frame_id: "drone0/base_link"   # body-fixed frame
-    tf.frame_id: "earth"            # TF frame_id
+    tf.frame_id: "drone0/map"            # TF frame_id
     tf.global_frame_id: "earth"   # TF earth frame_id
     tf.child_frame_id: "drone0/base_link"  # TF child_frame_id
 
@@ -93,21 +96,21 @@ drone0:
 
 /drone0/mavros/local_position:
   ros__parameters:
-    frame_id: "earth"
-    tf.frame_id: "earth"
+    frame_id: "drone0/map"
+    tf.frame_id: "drone0/map"
     tf.child_frame_id: "drone0/base_link"
 
 /drone0/mavros/setpoint_attitude:
   ros__parameters:
-    tf.frame_id: "earth"
+    tf.frame_id: "drone0/map"
 
 /drone0/mavros/setpoint_position:
   ros__parameters:
-    tf.frame_id: "earth"
+    tf.frame_id: "drone0/map"
 
 /drone0/mavros/odometry:
   ros__parameters:
     fcu.odom_parent_id_des: "drone0/odom"        # desired parent frame rotation of the FCU's odometry
     fcu.odom_child_id_des: "drone0/base_link"    # desired child frame rotation of the FCU's odometry
-    fcu.map_id_des: "earth"
+    fcu.map_id_des: "drone0/map"
 
