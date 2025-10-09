@@ -45,12 +45,13 @@ TAKE_OFF_SPEED = 1.0  # Max speed in m/s
 SLEEP_TIME = 0.5  # Sleep time between behaviors in seconds
 SPEED = 1.0  # Max speed in m/s
 HEIGHT = 1.0  # Height in meters
-DIM = 1.0
+DIM_X = 1.5
+DIM_Y = 1.0
 PATH = [
-    [DIM/2, DIM, HEIGHT],
-    [DIM/2, DIM/2, HEIGHT],
-    [DIM, DIM/2, HEIGHT],
-    [DIM, DIM, HEIGHT]
+    [DIM_X, DIM_Y, HEIGHT],
+    [DIM_X*2, DIM_Y, HEIGHT],
+    [DIM_X*2, -DIM_Y, HEIGHT],
+    [DIM_X, -DIM_Y, HEIGHT]
 ]
 LAND_SPEED = 0.5  # Max speed in m/s
 
