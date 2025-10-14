@@ -67,11 +67,11 @@
   #       yaw: -1.57079632679 # Rotation around z (rad)
 
 # Specific Parameters for each drone
-drone0/state_estimator:
+drone1/state_estimator:
   ros__parameters:
     rigid_body_name: "19"
 
-drone0:
+drone1:
   mavros/mavros_node:
     ros__parameters:
       fcu_url: "/dev/ttyACM0:57600" # Autopilot address for connection
@@ -79,38 +79,38 @@ drone0:
       tgt_system: 1 # Target system ID = Instance + 1
       tgt_component: 1 # Target component ID
       log_output: "screen"
-      odom_frame: "drone0/odom"
-      map_frame: "drone0/map"
+      odom_frame: "drone1/odom"
+      map_frame: "drone1/map"
 
-/drone0/mavros/global_position:
+/drone1/mavros/global_position:
   ros__parameters:
-    frame_id: "drone0/map"               # origin frame
-    child_frame_id: "drone0/base_link"   # body-fixed frame
-    tf.frame_id: "drone0/map"            # TF frame_id
+    frame_id: "drone1/map"               # origin frame
+    child_frame_id: "drone1/base_link"   # body-fixed frame
+    tf.frame_id: "drone1/map"            # TF frame_id
     tf.global_frame_id: "earth"   # TF earth frame_id
-    tf.child_frame_id: "drone0/base_link"  # TF child_frame_id
+    tf.child_frame_id: "drone1/base_link"  # TF child_frame_id
 
-/drone0/mavros/imu:
+/drone1/mavros/imu:
   ros__parameters:
-    frame_id: "drone0/base_link"
+    frame_id: "drone1/base_link"
 
-/drone0/mavros/local_position:
+/drone1/mavros/local_position:
   ros__parameters:
-    frame_id: "drone0/map"
-    tf.frame_id: "drone0/map"
-    tf.child_frame_id: "drone0/base_link"
+    frame_id: "drone1/map"
+    tf.frame_id: "drone1/map"
+    tf.child_frame_id: "drone1/base_link"
 
-/drone0/mavros/setpoint_attitude:
+/drone1/mavros/setpoint_attitude:
   ros__parameters:
-    tf.frame_id: "drone0/map"
+    tf.frame_id: "drone1/map"
 
-/drone0/mavros/setpoint_position:
+/drone1/mavros/setpoint_position:
   ros__parameters:
-    tf.frame_id: "drone0/map"
+    tf.frame_id: "drone1/map"
 
-/drone0/mavros/odometry:
+/drone1/mavros/odometry:
   ros__parameters:
-    fcu.odom_parent_id_des: "drone0/odom"        # desired parent frame rotation of the FCU's odometry
-    fcu.odom_child_id_des: "drone0/base_link"    # desired child frame rotation of the FCU's odometry
-    fcu.map_id_des: "drone0/map"
+    fcu.odom_parent_id_des: "drone1/odom"        # desired parent frame rotation of the FCU's odometry
+    fcu.odom_child_id_des: "drone1/base_link"    # desired child frame rotation of the FCU's odometry
+    fcu.map_id_des: "drone1/map"
 

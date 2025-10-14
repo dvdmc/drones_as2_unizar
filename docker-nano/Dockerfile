@@ -4,26 +4,12 @@ SHELL ["/bin/bash", "-c"]
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
-# Added for transition to new keys
-RUN rm /etc/apt/sources.list.d/ros2-latest.list \
-  && rm /usr/share/keyrings/ros2-latest-archive-keyring.gpg
-
-RUN apt-get update \
-  && apt-get install -y ca-certificates curl
-
-RUN export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}') ;\
-    curl -L -s -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb" \
-    && apt-get update \
-    && apt-get install /tmp/ros2-apt-source.deb \
-    && rm -f /tmp/ros2-apt-source.deb
-
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y  git \
+RUN apt-get update && apt-get upgrade -y \
+  && apt-get install -y \
     tmux \
     tmuxinator \
     vim \
     xterm \
-    curl \
     ssh \
     tree \
     python3-tk \
@@ -33,14 +19,12 @@ RUN apt-get install -y  git \
     htop \
     gdb \
     net-tools \
-    build-essential \
     cmake \
     lsb-release \
-    iputils-ping 
+    iputils-ping
+
 
 RUN echo "set -g mouse on" > /root/.tmux.conf
-
-# ROS2 utils
 
 ## ROS2 Jazzy utils
 RUN apt-get install -y \
@@ -69,20 +53,7 @@ RUN apt-get install -y ros-jazzy-rmw-cyclonedds-cpp
 RUN apt-get install -y ros-jazzy-mavros
 RUN source /opt/ros/jazzy/setup.bash && ros2 run mavros install_geographiclib_datasets.sh
 
-# Gazebo (Harmonic)
-# RUN apt-get install -y ros-jazzy-ros-gz
-
-# OptiTrack NOTE: We run the position mode from the ground station.
-# RUN mkdir -p /root/optitrack_ws/src
-# WORKDIR /root/optitrack_ws/src
-# RUN git clone -b rolling https://github.com/MOCAP4ROS2-Project/mocap4r2
-# RUN git clone -b rolling https://github.com/MOCAP4ROS2-Project/mocap4r2_msgs
-# RUN git clone https://github.com/MOCAP4ROS2-Project/mocap4ros2_optitrack
-# WORKDIR /root/optitrack_ws
-# RUN rosdep install --from-paths src --ignore-src -r -y
-# RUN source /opt/ros/jazzy/setup.bash && colcon build --symlink-install --executor sequential
-
-# AS2 TODO: update to binaries. ETA after June 2025
+# TODO: update to binaries when AS2 gets updated to Jazzy.
 RUN mkdir -p /root/aerostack2_ws/src
 RUN git clone -b jazzy-patch-trajgen https://github.com/dvdmc/aerostack2.git /root/aerostack2_ws/src/aerostack2 && \
     git clone -b jazzy https://github.com/dvdmc/as2_platform_mavlink.git /root/aerostack2_ws/src/as2_platform_mavlink
@@ -93,11 +64,13 @@ RUN rosdep update && rosdep install -y -r -q --from-paths src --ignore-src
 # AS2 dependencies on Nav2
 RUN apt-get update && apt-get install ros-jazzy-navigation2 ros-jazzy-nav2-bringup ros-jazzy-nav2-minimal-tb* -y
 
+# Build with care due to limited resources of Jetson Nano
 RUN source /opt/ros/jazzy/setup.bash && MAKEFLAGS="-j2" colcon build --symlink-install --executor sequential
 
 RUN pip3 install colcon-lcov-result cpplint cmakelint PySimpleGUI-4-foss --break-system-packages
 
-# Install Realsense from: https://github.com/IntelRealSense/realsense-ros
+# Install Realsense from: https://github.com/IntelRealSense/realsense-ros. 
+# NOTE: Realsense ROS has some issues with the bin release for ARM. We build it for the moment.
 RUN apt-get -y install ros-jazzy-librealsense2*
 RUN mkdir -p /root/realsense_ws/src
 WORKDIR /root/realsense_ws/src
@@ -106,11 +79,16 @@ WORKDIR /root/realsense_ws
 RUN rosdep install -i --from-path src --rosdistro $ROS_DISTRO --skip-keys=librealsense2 -y
 RUN source /opt/ros/jazzy/setup.bash && colcon build
 
-
-
 RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc
-# RUN echo "source /root/optitrack_ws/install/setup.bash" >> /root/.bashrc
 RUN echo "source /root/aerostack2_ws/install/setup.bash" >> /root/.bashrc
 RUN echo "source /root/realsense_ws/install/setup.bash" >> /root/.bashrc
+
+# INCLUDE a compiled ready version of the current repo
+RUN mkdir -p /root/as2_system_compiled_ws/src
+ADD as2_system /root/as2_system_compiled_ws/src/as2_system
+WORKDIR /root/as2_system_compiled_ws
+RUN ["/bin/bash", "-c", "colcon build --symlink-install"]
+
+RUN rm -rf log # remove log folder
 
 WORKDIR /root/
