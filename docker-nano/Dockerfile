@@ -2,8 +2,6 @@ FROM dustynv/ros:jazzy-ros-base-r36.4.0-cu128-24.04
 
 SHELL ["/bin/bash", "-c"]
 
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
-
 RUN apt-get update && apt-get upgrade -y \
   && apt-get install -y \
     tmux \
