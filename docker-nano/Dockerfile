@@ -1,8 +1,34 @@
-FROM arm64v8/ros:jazzy-ros-base
+# === Select base image: comment/uncomment ONE of the following two lines ===
+# For CUDA support:
+FROM nvidia/cuda:12.8.1-runtime-ubuntu24.04
+# For plain Ubuntu (no CUDA):
+# FROM ubuntu:24.04
 
-SHELL ["/bin/bash", "-c"]
+# The rest of the Dockerfile continues from here
 
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+# Install ROS 2 Jazzy
+# See https://hub.docker.com/layers/library/ros/jazzy/images/sha256-50a4769126c5ace8e2cf5ba2acacd338fca425149e1ee0bed0cdcb53ffbf429c
+RUN echo 'Etc/UTC' > /etc/timezone \
+ &&     ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime \ 
+ &&     apt-get update  \
+ &&     apt-get install -q -y --no-install-recommends tzdata \
+ &&     rm -rf /var/lib/apt/lists/* # buildkit
+
+RUN apt-get update  \
+ && apt-get install -q -y --no-install-recommends ca-certificates curl dirmngr gnupg2 \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN curl -L -s -o /tmp/ros2-apt-source.deb https://github.com/ros-infrastructure/ros-apt-source/releases/download/1.1.0/ros2-apt-source_1.1.0.noble_all.deb \    
+  && echo "35441f3092fd05773a3c397fab38661bec466584c7a1f1c05366579997cb5fe7 /tmp/ros2-apt-source.deb" | sha256sum --strict --check \
+  && apt-get update \
+  && apt-get install /tmp/ros2-apt-source.deb \
+  && rm -f /tmp/ros2-apt-source.deb \
+  && rm -rf /var/lib/apt/lists/*
+
+
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV ROS_DISTRO=jazzy
 
 RUN apt-get update && apt-get upgrade -y \
   && apt-get install -y \
