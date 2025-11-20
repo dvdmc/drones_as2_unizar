@@ -30,6 +30,8 @@ ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 ENV ROS_DISTRO=jazzy
 
+SHELL ["/bin/bash", "-c"]
+
 RUN apt-get update && apt-get upgrade -y \
   && apt-get install -y \
     tmux \
