@@ -1,4 +1,4 @@
-FROM arm64v8/ros:jazzy-ros-base
+FROM dustynv/ros:jazzy-ros-base-r36.4.0-cu128-24.04
 
 SHELL ["/bin/bash", "-c"]
 
