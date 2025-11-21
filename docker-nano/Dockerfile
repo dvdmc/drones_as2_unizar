@@ -1,6 +1,6 @@
 # === Select base image: comment/uncomment ONE of the following two lines ===
 # For CUDA support:
-FROM nvidia/cuda:12.8.1-runtime-ubuntu24.04
+FROM nvidia/cuda:12.6.0-runtime-ubuntu24.04
 # For plain Ubuntu (no CUDA):
 # FROM ubuntu:24.04
 
@@ -30,6 +30,23 @@ ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 ENV ROS_DISTRO=jazzy
 
+# Install ROS 2 core and base, colcon, rosdep, and other essentials
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    ros-jazzy-ros-core=0.11.0-1* \
+    ros-jazzy-ros-base=0.11.0-1* \
+    build-essential \
+    git \
+    python3-colcon-common-extensions \
+    python3-colcon-mixin \
+    python3-rosdep \
+    python3-vcstool \
+    ca-certificates \
+    curl \
+    dirmngr \
+    gnupg2 \
+  && rm -rf /var/lib/apt/lists/*
+  
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update && apt-get upgrade -y \
