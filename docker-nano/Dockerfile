@@ -4,8 +4,6 @@ FROM nvidia/cuda:12.6.0-runtime-ubuntu24.04
 # For plain Ubuntu (no CUDA):
 # FROM ubuntu:24.04
 
-# The rest of the Dockerfile continues from here
-
 # Install ROS 2 Jazzy
 # See https://hub.docker.com/layers/library/ros/jazzy/images/sha256-50a4769126c5ace8e2cf5ba2acacd338fca425149e1ee0bed0cdcb53ffbf429c
 RUN echo 'Etc/UTC' > /etc/timezone \
@@ -111,7 +109,7 @@ RUN rosdep update && rosdep install -y -r -q --from-paths src --ignore-src
 RUN apt-get update && apt-get install ros-jazzy-navigation2 ros-jazzy-nav2-bringup ros-jazzy-nav2-minimal-tb* -y
 
 # Build with care due to limited resources of Jetson Nano
-RUN source /opt/ros/jazzy/setup.bash && MAKEFLAGS="-j2" colcon build --symlink-install --executor sequential
+RUN source /opt/ros/jazzy/setup.bash && colcon build --symlink-install --executor sequential
 
 RUN pip3 install colcon-lcov-result cpplint cmakelint PySimpleGUI-4-foss --break-system-packages
 
@@ -124,6 +122,10 @@ RUN git clone https://github.com/IntelRealSense/realsense-ros.git
 WORKDIR /root/realsense_ws
 RUN rosdep install -i --from-path src --rosdistro $ROS_DISTRO --skip-keys=librealsense2 -y
 RUN source /opt/ros/jazzy/setup.bash && colcon build
+
+# Install torch for current Jetson version
+RUN pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126 --break-system-packages
+
 
 RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc
 RUN echo "source /root/aerostack2_ws/install/setup.bash" >> /root/.bashrc
