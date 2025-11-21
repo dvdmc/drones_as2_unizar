@@ -46,7 +46,7 @@ RUN apt-get update \
     dirmngr \
     gnupg2 \
   && rm -rf /var/lib/apt/lists/*
-  
+
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update && apt-get upgrade -y \
@@ -90,6 +90,7 @@ RUN apt-get install -y \
 
 RUN apt-get install -y pylint flake8 pycodestyle
 RUN apt-get install -y cppcheck lcov
+RUN rosdep init
 
 # For allowing connection between machines, fastdds has some problem.
 RUN apt-get install -y ros-jazzy-rmw-cyclonedds-cpp
