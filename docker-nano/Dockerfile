@@ -132,9 +132,9 @@ RUN echo "source /root/aerostack2_ws/install/setup.bash" >> /root/.bashrc
 RUN echo "source /root/realsense_ws/install/setup.bash" >> /root/.bashrc
 
 # Include a compiled ready version of the current repo
-ADD drone_ws /root/drone_ws_compiled
-WORKDIR /root/drone_ws_compiled
-RUN ["/bin/bash", "-c", "colcon build --symlink-install"]
+# ADD drone_ws/ /root/drone_ws_compiled
+# WORKDIR /root/drone_ws_compiled
+# RUN ["/bin/bash", "-c", "colcon build --symlink-install"]
 
 RUN rm -rf log # remove log folder
 
