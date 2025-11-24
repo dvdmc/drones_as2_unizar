@@ -131,11 +131,10 @@ RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc
 RUN echo "source /root/aerostack2_ws/install/setup.bash" >> /root/.bashrc
 RUN echo "source /root/realsense_ws/install/setup.bash" >> /root/.bashrc
 
-# INCLUDE a compiled ready version of the current repo
-# RUN mkdir -p /root/as2_system_compiled_ws/src
-# ADD as2_system /root/as2_system_compiled_ws/src/as2_system
-# WORKDIR /root/as2_system_compiled_ws
-# RUN ["/bin/bash", "-c", "colcon build --symlink-install"]
+# Include a compiled ready version of the current repo
+ADD drone_ws /root/drone_ws_compiled
+WORKDIR /root/drone_ws_compiled
+RUN ["/bin/bash", "-c", "colcon build --symlink-install"]
 
 RUN rm -rf log # remove log folder
 
