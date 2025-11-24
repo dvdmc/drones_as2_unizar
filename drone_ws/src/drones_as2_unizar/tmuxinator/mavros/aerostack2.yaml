@@ -83,3 +83,9 @@ windows:
         - ros2 run as2_alphanumeric_viewer as2_alphanumeric_viewer_node
             --ros-args -r  __ns:=/<%= drone_namespace %>
         - echo Run here the mission
+
+  - mapping:
+      layout: tiled
+      panes:
+        - sleep 10; source .venv-sem/bin/activate && source install/setup.bash && ros2 launch sensors_tools_ros semantic_sensor_bag.launch.xml
+        - sleep 10; source install/setup.bash && ros2 launch bloomxai_ros bonxai_mapping.launch.xml
