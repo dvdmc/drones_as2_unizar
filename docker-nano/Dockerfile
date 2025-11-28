@@ -127,7 +127,10 @@ RUN source /opt/ros/jazzy/setup.bash && colcon build
 RUN apt-get install -y python3.12-venv
 RUN pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126 --break-system-packages
 
+# Indicate that we are inside a drone
+RUN echo "PS1=" 🚁 🤖 "$PS1" " >> /root/.bashrc
 
+# Add sources to compiled repositories in order
 RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc
 RUN echo "source /root/aerostack2_ws/install/setup.bash" >> /root/.bashrc
 RUN echo "source /root/realsense_ws/install/setup.bash" >> /root/.bashrc
