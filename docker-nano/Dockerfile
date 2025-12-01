@@ -109,7 +109,7 @@ RUN rosdep update && rosdep install -y -r -q --from-paths src --ignore-src
 RUN apt-get update && apt-get install ros-jazzy-navigation2 ros-jazzy-nav2-bringup ros-jazzy-nav2-minimal-tb* -y
 
 # Build with care due to limited resources of Jetson Nano
-RUN source /opt/ros/jazzy/setup.bash && MAKEFLAGS="-j4" colcon build --symlink-install
+RUN source /opt/ros/jazzy/setup.bash && MAKEFLAGS="-j2" colcon build --symlink-install --parallel-workers 2
 
 RUN pip3 install colcon-lcov-result cpplint cmakelint PySimpleGUI-4-foss --break-system-packages
 
