@@ -128,7 +128,7 @@ RUN source /opt/ros/jazzy/setup.bash && colcon build
 # RUN pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126 --break-system-packages
 
 # Indicate that we are inside a drone
-RUN echo "PS1=' 🚁 🤖 $PS1' " >> /root/.bashrc
+RUN echo "PS1='🚁 🤖'$PS1 " >> /root/.bashrc
 
 # Add sources to compiled repositories in order
 RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc
