@@ -25,7 +25,7 @@ windows:
   - sensors:
       layout: tiled
       panes:
-        - ros2 run realsense2_camera realsense2_camera_node --ros-args -r __ns:=/<%= drone_namespace %> -p align_depth.enable:=true -p enabe_gyro:=false -p enable_accel:=false -p rgb_camera.color_profile:=640x480x15 -p depth_module.depth_profile:=640x480x15 -p color_qos:=SENSOR_DATA -p depth_qos:=SENSOR_DATA
+        - ros2 run realsense2_camera realsense2_camera_node --ros-args -r __ns:=/<%= drone_namespace %> -p align_depth.enable:=true -p enabe_gyro:=false -p enable_accel:=false -p color_qos:=SENSOR_DATA -p depth_qos:=SENSOR_DATA
 
   <%- if rosbag %>
   - bag:
