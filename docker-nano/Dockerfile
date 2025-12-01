@@ -124,8 +124,8 @@ RUN rosdep install -i --from-path src --rosdistro $ROS_DISTRO --skip-keys=librea
 RUN source /opt/ros/jazzy/setup.bash && colcon build
 
 # Install torch for current Jetson version
-RUN apt-get install -y python3.12-venv
-RUN pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126 --break-system-packages
+# RUN apt-get install -y python3.12-venv
+# RUN pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126 --break-system-packages
 
 # Indicate that we are inside a drone
 RUN echo "PS1=" 🚁 🤖 "$PS1" " >> /root/.bashrc
